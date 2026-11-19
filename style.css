@@ -1,8 +1,11 @@
 :root {
   color-scheme: light;
-  --sky: #4b7df8;
+  --sky: #3478b8;
+  --sky-deep: #2c69b4;
+  --sky-light: #5a96cc;
+  --ink: #2f77bd;
   --white: #fff;
-  --soft-white: rgb(255 255 255 / 72%);
+  --soft-white: rgb(255 255 255 / 82%);
 }
 
 * {
@@ -18,9 +21,9 @@ body {
   min-width: 320px;
   margin: 0;
   overflow: hidden;
-  background: var(--sky);
+  background: linear-gradient(180deg, var(--sky-deep) 0%, #2f72bb 25%, #3480c5 55%, #3a88c6 78%, var(--sky-light) 100%);
   color: var(--white);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
 }
 
 body:not([data-edition="1"]) .cloud-layer {
@@ -46,6 +49,7 @@ body:not([data-edition="1"]) .cloud-layer {
   align-items: center;
   padding: 2rem 3.4rem;
   pointer-events: none;
+  text-shadow: 0 2px 12px rgb(33 92 153 / 18%);
 }
 
 .topbar a {
@@ -68,7 +72,8 @@ body:not([data-edition="1"]) .cloud-layer {
 .back-link {
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
 }
 
 .wordmark-small {
@@ -317,6 +322,15 @@ body[data-edition="6"] .edition-track {
 }
 
 .hero,
+.gallery-screen,
+.edition-three,
+.edition-four,
+.edition-five,
+.edition-six {
+  background: linear-gradient(180deg, #2c69b4 0%, #2f72bb 25%, #3480c5 55%, #3a88c6 78%, #5a96cc 100%);
+}
+
+.hero,
 .edition-three,
 .edition-four,
 .edition-five {
@@ -343,7 +357,7 @@ body[data-edition="6"] .edition-track {
   display: flex;
   justify-content: center;
   margin: 0;
-  font-family: "Bodoni 72", Didot, Georgia, "Times New Roman", serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: clamp(4rem, 14.5vw, 14rem);
   font-weight: 700;
   letter-spacing: -0.085em;
@@ -387,7 +401,7 @@ body[data-edition="6"] .edition-track {
 
 .tagline {
   margin: 2rem 0 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: clamp(1.15rem, 2vw, 1.65rem);
   font-style: italic;
 }
@@ -569,21 +583,21 @@ body[data-edition="6"] .edition-track {
 
 .edition-three h2 {
   margin: 0;
-  font-family: "Bodoni 72", Didot, Georgia, "Times New Roman", serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: clamp(2.5rem, 4.2vw, 4.5rem);
   letter-spacing: -0.06em;
 }
 
 .edition-four h2 {
   margin: 0;
-  font-family: "Bodoni 72", Didot, Georgia, "Times New Roman", serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: clamp(2.5rem, 4.2vw, 4.5rem);
   letter-spacing: -0.06em;
 }
 
 .edition-five h2 {
   margin: 0;
-  font-family: "Bodoni 72", Didot, Georgia, "Times New Roman", serif;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: clamp(2.5rem, 4.2vw, 4.5rem);
   letter-spacing: -0.06em;
 }
@@ -592,6 +606,26 @@ body[data-edition="6"] .edition-track {
   margin: 0.75rem auto 0;
   color: var(--soft-white);
   font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  line-height: 1.5;
+}
+
+.edition-six h2,
+.edition-six-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edition-six h2 {
+  margin-top: 0;
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  font-size: clamp(2.5rem, 4.2vw, 4.5rem);
+  letter-spacing: -0.04em;
+}
+
+.edition-six-lead {
+  max-width: 42rem;
+  margin-top: 0.75rem;
+  color: var(--soft-white);
   line-height: 1.5;
 }
 
@@ -908,6 +942,20 @@ body[data-edition="6"] .edition-track {
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
   margin: 0 auto;
+}
+
+.phone-qr-panel,
+.mobile-drawing-panel {
+  border: 1px solid rgb(255 255 255 / 38%);
+  border-radius: 2.2rem;
+  background: rgb(255 255 255 / 8%);
+  box-shadow: 0 1.2rem 3rem rgb(24 76 130 / 14%);
+  backdrop-filter: blur(10px);
+}
+
+.qr-frame,
+.drawing-cloud {
+  filter: drop-shadow(0 1.2rem 1.8rem rgb(24 76 130 / 18));
 }
 
 .drawing-cloud {
