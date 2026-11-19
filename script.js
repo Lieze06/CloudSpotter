@@ -2,7 +2,7 @@ const cloudLayer = document.querySelector(".cloud-layer");
 const maxClouds = 24;
 const screens = Array.from(document.querySelectorAll(".edition-screen"));
 const viewport = document.querySelector(".edition-viewport");
-const editionIds = ["edition-1", "edition-2", "edition-3", "edition-4", "edition-5"];
+const editionIds = ["edition-home", "edition-1", "edition-2", "edition-3", "edition-4", "edition-5", "edition-6"];
 const validEdition = (id) => editionIds.includes(id);
 let activeCard = null;
 let pinnedCard = null;
@@ -34,17 +34,24 @@ function hideFact() {
 
 function showEdition(id) {
   if (!validEdition(id)) return;
+  const number = id === "edition-home" ? "home" : id.slice(-1);
   if (id !== "edition-2" && activeCard) {
     pinnedCard = null;
     hideFact();
   }
 
-  const number = id.slice(-1);
-  document.body.dataset.edition = number;
-  document.title = `Cloudspotter — editie 0${number}`;
+  if (id === "edition-home") {
+    document.body.dataset.edition = "home";
+    document.title = "Cloudspotter";
+  } else {
+    document.body.dataset.edition = number;
+    document.title = `Cloudspotter — editie 0${number}`;
+  }
   viewport.scrollLeft = 0;
   screens.forEach((screen) => {
-    const active = screen.id === `screen-${number}`;
+    const active = id === "edition-home"
+      ? screen.id === "screen-home"
+      : screen.id === `screen-${number}`;
     screen.inert = !active;
     screen.setAttribute("aria-hidden", String(!active));
     if (active) screen.scrollTop = 0;
@@ -64,9 +71,18 @@ document.querySelectorAll('.topbar a[href^="#edition-"]').forEach((link) => {
   });
 });
 
+const homeWordmark = document.querySelector(".wordmark-small");
+
+if (homeWordmark) {
+  homeWordmark.addEventListener("click", (event) => {
+    event.preventDefault();
+    navigateToEdition("edition-home");
+  });
+}
+
 function syncEditionFromHash() {
   const id = location.hash.slice(1);
-  showEdition(validEdition(id) ? id : "edition-1");
+  showEdition(validEdition(id) ? id : "edition-home");
 }
 
 window.addEventListener("hashchange", syncEditionFromHash);
@@ -312,60 +328,215 @@ if (drawingCanvas) {
   }
 }
 
-const observationList = document.querySelector("#wind-observations");
+const windCanvas = document.querySelector("#cloud-wind-canvas");
 
-if (observationList) {
-  const observations = Array.from(observationList.querySelectorAll(".wind-observation"));
-  const sortButtons = Array.from(document.querySelectorAll(".edition-four-sort [data-sort]"));
+if (windCanvas) {
+  const windContext = windCanvas.getContext("2d");
+  const celebration = document.querySelector("#cloud-celebration");
+  const celebrationCanvas = document.querySelector("#confetti-canvas");
+  const celebrationContext = celebrationCanvas.getContext("2d");
+  const resetButton = document.querySelector("#reset-clouds");
+  const cloudParticles = [];
+  const confetti = [];
+  let pointer = { x: 0, y: 0, px: 0, py: 0, active: false };
+  let windAudio = null;
+  let celebrationFrame = null;
+  let completed = false;
 
-  function revealObservation(observation) {
-    observation.classList.add("is-revealed");
-    observation.setAttribute("aria-expanded", "true");
-    observation.querySelector(".wind-observation-detail").setAttribute("aria-hidden", "false");
+  function resizeCloudCanvas() {
+    const bounds = windCanvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    windCanvas.width = Math.round(bounds.width * ratio);
+    windCanvas.height = Math.round(bounds.height * ratio);
+    windContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+    createClouds();
   }
 
-  observations.forEach((observation) => {
-    let pointerStart = null;
+  function createClouds() {
+    cloudParticles.length = 0;
+    const bounds = windCanvas.getBoundingClientRect();
+    const cols = Math.ceil(bounds.width / 58);
+    const rows = Math.ceil(bounds.height / 58);
 
-    observation.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      pointerStart = { x: event.clientX, y: event.clientY };
-      observation.setPointerCapture(event.pointerId);
+    for (let row = 0; row < rows; row += 1) {
+      for (let col = 0; col < cols; col += 1) {
+        if (Math.random() < 0.04) continue;
+        const x = col * 58 + 12 + Math.random() * 38;
+        const y = row * 58 + 8 + Math.random() * 34;
+        const count = 6 + Math.floor(Math.random() * 5);
+        for (let part = 0; part < count; part += 1) {
+          cloudParticles.push({
+            x: x + (part - count / 2) * (12 + Math.random() * 8),
+            y: y + (Math.random() - 0.5) * 25,
+            radius: 18 + Math.random() * 24,
+            vx: 0,
+            vy: 0,
+            alpha: 0.82 + Math.random() * 0.18,
+            gone: false
+          });
+        }
+      }
+    }
+  }
+
+  function drawClouds() {
+    const bounds = windCanvas.getBoundingClientRect();
+    windContext.clearRect(0, 0, bounds.width, bounds.height);
+    windContext.save();
+    windContext.fillStyle = "#fff";
+    cloudParticles.forEach((particle) => {
+      if (particle.gone) {
+        particle.vx *= 0.96;
+        particle.vy *= 0.96;
+        particle.alpha *= 0.97;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+      }
+      if (particle.alpha < 0.01) return;
+      windContext.globalAlpha = particle.alpha;
+      windContext.beginPath();
+      windContext.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+      windContext.fill();
     });
+    windContext.restore();
+  }
 
-    observation.addEventListener("pointerup", (event) => {
-      if (!pointerStart) return;
+  function ensureWindAudio() {
+    if (!windAudio) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const context = new AudioContext();
+      const buffer = context.createBuffer(1, context.sampleRate * 1.5, context.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let index = 0; index < data.length; index += 1) data[index] = Math.random() * 2 - 1;
+      const source = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+      source.buffer = buffer;
+      source.loop = true;
+      filter.type = "lowpass";
+      filter.frequency.value = 550;
+      gain.gain.value = 0;
+      source.connect(filter).connect(gain).connect(context.destination);
+      source.start();
+      windAudio = { context, gain };
+    }
+    if (windAudio.context.state === "suspended") windAudio.context.resume();
+  }
 
-      const deltaX = event.clientX - pointerStart.x;
-      const deltaY = event.clientY - pointerStart.y;
-      pointerStart = null;
+  function gust(event) {
+    if (completed) return;
+    ensureWindAudio();
+    const bounds = windCanvas.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+    const dx = x - pointer.px || 1;
+    const dy = y - pointer.py;
+    pointer = { x, y, px: x, py: y, active: true };
 
-      if (Math.abs(deltaX) >= 36 && Math.abs(deltaX) > Math.abs(deltaY)) {
-        revealObservation(observation);
+    let changed = 0;
+    cloudParticles.forEach((particle) => {
+      if (particle.gone) return;
+      const distance = Math.hypot(particle.x - x, particle.y - y);
+      if (distance < 66) {
+        particle.gone = true;
+        particle.vx = Math.sign(dx) * (3 + Math.random() * 5) + (particle.x - x) * 0.025;
+        particle.vy = dy * 0.04 + (particle.y - y) * 0.035 - 1;
+        changed += 1;
       }
     });
 
-    observation.addEventListener("pointercancel", () => {
-      pointerStart = null;
-    });
+    if (changed && windAudio) {
+      windAudio.gain.gain.cancelScheduledValues(windAudio.context.currentTime);
+      windAudio.gain.gain.setTargetAtTime(0.035, windAudio.context.currentTime, 0.03);
+      clearTimeout(gust.windTimer);
+      gust.windTimer = setTimeout(() => {
+        if (windAudio) windAudio.gain.gain.setTargetAtTime(0, windAudio.context.currentTime, 0.08);
+      }, 130);
+    }
 
-    observation.addEventListener("click", () => revealObservation(observation));
-  });
+    const remaining = cloudParticles.filter((particle) => !particle.gone).length;
+    if (remaining < cloudParticles.length * 0.025) celebrate();
+  }
 
-  sortButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const sortKey = button.dataset.sort;
-      const sorted = [...observations].sort((first, second) =>
-        first.dataset[sortKey].localeCompare(second.dataset[sortKey], "nl", {
-          numeric: true,
-          sensitivity: "base"
-        })
-      );
-
-      sorted.forEach((observation) => observationList.append(observation.closest("li")));
-      sortButtons.forEach((sortButton) => {
-        sortButton.setAttribute("aria-pressed", String(sortButton === button));
+  function createConfetti() {
+    const bounds = celebrationCanvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    celebrationCanvas.width = Math.round(bounds.width * ratio);
+    celebrationCanvas.height = Math.round(bounds.height * ratio);
+    celebrationContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+    confetti.length = 0;
+    for (let index = 0; index < 180; index += 1) {
+      confetti.push({
+        x: bounds.width * (0.1 + Math.random() * 0.8),
+        y: -20 - Math.random() * bounds.height * 0.7,
+        w: 6 + Math.random() * 8,
+        h: 3 + Math.random() * 5,
+        vx: -3 + Math.random() * 6,
+        vy: 3 + Math.random() * 5,
+        rotation: Math.random() * Math.PI,
+        spin: -0.18 + Math.random() * 0.36,
+        color: ["#ffe263", "#ff796c", "#fffdf3", "#20366f", "#70c9a5"][index % 5]
       });
+    }
+  }
+
+  function animateConfetti() {
+    const bounds = celebrationCanvas.getBoundingClientRect();
+    celebrationContext.clearRect(0, 0, bounds.width, bounds.height);
+    confetti.forEach((piece) => {
+      piece.x += piece.vx;
+      piece.y += piece.vy;
+      piece.vy += 0.025;
+      piece.rotation += piece.spin;
+      celebrationContext.save();
+      celebrationContext.translate(piece.x, piece.y);
+      celebrationContext.rotate(piece.rotation);
+      celebrationContext.fillStyle = piece.color;
+      celebrationContext.fillRect(-piece.w / 2, -piece.h / 2, piece.w, piece.h);
+      celebrationContext.restore();
     });
+    if (confetti.some((piece) => piece.y < bounds.height + 30)) {
+      celebrationFrame = requestAnimationFrame(animateConfetti);
+    }
+  }
+
+  function celebrate() {
+    if (completed) return;
+    completed = true;
+    celebration.classList.add("is-visible");
+    celebration.setAttribute("aria-hidden", "false");
+    resetButton.hidden = false;
+    createConfetti();
+    animateConfetti();
+  }
+
+  function resetClouds() {
+    if (celebrationFrame) cancelAnimationFrame(celebrationFrame);
+    completed = false;
+    celebration.classList.remove("is-visible");
+    celebration.setAttribute("aria-hidden", "true");
+    resetButton.hidden = true;
+    createClouds();
+  }
+
+  windCanvas.addEventListener("pointermove", gust);
+  windCanvas.addEventListener("pointerdown", (event) => {
+    pointer.active = true;
+    pointer.px = event.clientX - windCanvas.getBoundingClientRect().left;
+    pointer.py = event.clientY - windCanvas.getBoundingClientRect().top;
+    gust(event);
   });
+  windCanvas.addEventListener("pointerleave", () => {
+    pointer.active = false;
+  });
+  resetButton.addEventListener("click", resetClouds);
+  window.addEventListener("resize", resizeCloudCanvas);
+  resizeCloudCanvas();
+
+  function animateClouds() {
+    drawClouds();
+    requestAnimationFrame(animateClouds);
+  }
+  animateClouds();
 }

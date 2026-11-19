@@ -8,11 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
     <title>Cloudspotter — editie 01</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
   </head>
-  <body data-edition="1">
+  <body data-edition="home">
     <div class="cloud-layer" aria-hidden="true"></div>
     <svg class="cloud-shapes" aria-hidden="true" focusable="false">
       <defs>
@@ -48,7 +50,7 @@
         <span class="edition-arrow" aria-hidden="true">←</span>
         <span>EDITIE 04</span>
       </a>
-      <a class="wordmark-small" href="#edition-1" aria-label="Cloudspotter, editie 1">CLOUDSPOTTER</a>
+      <a class="wordmark-small" href="#edition-home" aria-label="Terug naar de voorpagina">CLOUDSPOTTER</a>
       <a class="edition-next edition-next-two" href="#edition-2" aria-label="Ga naar editie 2">
         <span>EDITIE 02</span>
         <span class="edition-arrow" aria-hidden="true">→</span>
@@ -69,7 +71,45 @@
 
     <main class="edition-viewport">
       <div class="edition-track">
-        <section class="hero edition-screen" id="screen-1" aria-labelledby="title">
+        <section class="landing-screen edition-screen" id="screen-home" aria-labelledby="landing-title">
+          <h1 class="landing-title" id="landing-title" aria-label="Cloud Spotter">
+            Cloud Sp<svg class="landing-wolk-o" viewBox="0 0 100 50" aria-hidden="true"><rect x="2" y="26" width="96" height="22" rx="11"/><circle cx="40" cy="26" r="17"/><circle cx="62" cy="20" r="13"/></svg>tter
+          </h1>
+          <nav class="edition-cloud-nav" aria-label="Edities">
+            <a class="edition-cloud edition-cloud-1" href="#edition-1" aria-label="Editie 1">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 1</span></span>
+            </a>
+            <a class="edition-cloud edition-cloud-2" href="#edition-2" aria-label="Editie 2">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 2</span></span>
+            </a>
+            <a class="edition-cloud edition-cloud-3" href="#edition-3" aria-label="Editie 3">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 3</span></span>
+            </a>
+            <a class="edition-cloud edition-cloud-4" href="#edition-4" aria-label="Editie 4">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 4</span></span>
+            </a>
+            <a class="edition-cloud edition-cloud-5" href="#edition-5" aria-label="Editie 5">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 5</span></span>
+            </a>
+            <a class="edition-cloud edition-cloud-6" href="#edition-6" aria-label="Editie 6">
+              <span class="edition-cloud-drift"><svg viewBox="0 0 270 150" aria-hidden="true"><use href="#landing-wolkvorm"/></svg><span class="edition-cloud-label">Editie 6</span></span>
+            </a>
+          </nav>
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <defs>
+              <g id="landing-wolkvorm">
+                <rect x="14" y="62" width="244" height="66" rx="33"/>
+                <circle cx="62" cy="86" r="30"/>
+                <circle cx="112" cy="58" r="40"/>
+                <circle cx="168" cy="52" r="34"/>
+                <circle cx="214" cy="80" r="32"/>
+                <ellipse cx="150" cy="112" rx="70" ry="22"/>
+              </g>
+            </defs>
+          </svg>
+        </section>
+
+        <section class="hero edition-screen" id="screen-1" aria-labelledby="title" inert>
           <p class="eyebrow">EEN KLEIN ONDERZOEK NAAR DE LUCHT</p>
           <h1 class="wordmark" id="title" aria-label="Cloudspotter">
             <span class="letter" aria-hidden="true"><span class="letter-motion">C</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">l</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">o</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">u</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">d</span></span><span class="letter word-gap" aria-hidden="true"><span class="letter-motion">s</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">p</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">o</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">t</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">t</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">e</span></span><span class="letter" aria-hidden="true"><span class="letter-motion">r</span></span>
@@ -150,67 +190,33 @@
         </section>
 
         <section class="edition-four edition-screen" id="screen-4" aria-labelledby="edition-four-title" inert>
+          <canvas id="cloud-wind-canvas" aria-label="Beweeg je muis of veeg over het scherm om de wolken weg te blazen"></canvas>
           <div class="edition-four-heading">
             <p class="eyebrow">EDITIE 04 · DE HANDELING</p>
-            <h2 id="edition-four-title">Blaas de wolk opzij.</h2>
-            <p class="edition-four-lead">Veeg over een wolk of tik op het tijdstip. Dan verschijnt wat de wind en het licht met wolken doen.</p>
+            <h2 id="edition-four-title">Blaas alle wolken weg.</h2>
+            <p class="edition-four-lead">Beweeg je muis of veeg met je vinger over de wolken.</p>
           </div>
-
-          <p class="edition-four-sort" role="group" aria-label="Sorteer de waarnemingen">
-            Orden op
-            <button type="button" data-sort="time" aria-pressed="true">uur</button>
-            <span aria-hidden="true">·</span>
-            <button type="button" data-sort="date" aria-pressed="false">datum</button>
-            <span aria-hidden="true">·</span>
-            <button type="button" data-sort="type" aria-pressed="false">soort</button>
-          </p>
-
-          <ol class="wind-observation-list" id="wind-observations" aria-label="Wolkenwaarnemingen">
-            <li>
-              <button class="wind-observation cloud-a" type="button" data-date="2026-11-18" data-time="07:42" data-type="Wind" aria-expanded="false">
-                <img src="assets/edition-2/clouds-02.jpeg" alt="">
-                <span class="wind-observation-time"><time datetime="07:42">07:42</time></span>
-                <span class="sr-only">Veeg of tik om deze wolk weg te blazen en de waarneming te zien.</span>
-                <span class="wind-observation-detail" aria-hidden="true" aria-live="polite">
-                  <span class="wind-observation-date"><time datetime="2026-11-18">18 nov 2026</time> · Wind</span>
-                  <strong class="wind-observation-title">Wolken bewegen mee</strong>
-                  <span class="wind-observation-copy">Wind voert wolken op verschillende hoogtes mee. Hogerop kan de wind een andere kant op waaien.</span>
-                </span>
-              </button>
-            </li>
-            <li>
-              <button class="wind-observation cloud-b" type="button" data-date="2026-11-16" data-time="12:15" data-type="Vorming" aria-expanded="false">
-                <img src="assets/edition-2/clouds-04.jpeg" alt="">
-                <span class="wind-observation-time"><time datetime="12:15">12:15</time></span>
-                <span class="sr-only">Veeg of tik om deze wolk weg te blazen en de waarneming te zien.</span>
-                <span class="wind-observation-detail" aria-hidden="true" aria-live="polite">
-                  <span class="wind-observation-date"><time datetime="2026-11-16">16 nov 2026</time> · Vorming</span>
-                  <strong class="wind-observation-title">Zo ontstaat een wolk</strong>
-                  <span class="wind-observation-copy">Vochtige lucht koelt af. Waterdamp vormt kleine waterdruppels of ijskristallen.</span>
-                </span>
-              </button>
-            </li>
-            <li>
-              <button class="wind-observation cloud-c" type="button" data-date="2026-11-17" data-time="17:36" data-type="Licht" aria-expanded="false">
-                <img src="assets/edition-2/clouds-06.jpeg" alt="">
-                <span class="wind-observation-time"><time datetime="17:36">17:36</time></span>
-                <span class="sr-only">Veeg of tik om deze wolk weg te blazen en de waarneming te zien.</span>
-                <span class="wind-observation-detail" aria-hidden="true" aria-live="polite">
-                  <span class="wind-observation-date"><time datetime="2026-11-17">17 nov 2026</time> · Licht</span>
-                  <strong class="wind-observation-title">Licht tekent de rand</strong>
-                  <span class="wind-observation-copy">Zonlicht kan de randen van wolken laten oplichten. Daardoor ziet dezelfde wolk er anders uit.</span>
-                </span>
-              </button>
-            </li>
-          </ol>
-
-          <p class="edition-four-note">Voorbeeldgegevens: vervang deze datums, tijden en teksten door je eigen waarnemingen.</p>
+          <button class="reset-clouds" id="reset-clouds" type="button" hidden>Wolken opnieuw</button>
+          <div class="celebration" id="cloud-celebration" aria-live="polite" aria-hidden="true">
+            <div class="celebration-bunting" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+            <p>De lucht is weer vrij!</p>
+          </div>
         </section>
 
         <section class="edition-five edition-screen" id="screen-5" aria-labelledby="edition-five-title" inert>
           <p class="eyebrow">EDITIE 05 · BINNENKORT</p>
           <h2 id="edition-five-title">De wolken gaan verder.</h2>
           <p class="edition-five-lead">Hier komt de volgende editie van Cloudspotter.</p>
+        </section>
+
+        <section class="edition-six edition-screen" id="screen-6" aria-labelledby="edition-six-title" inert>
+          <p class="eyebrow">EDITIE 06 · BINNENKORT</p>
+          <h2 id="edition-six-title">Nog een wolk in zicht.</h2>
+          <p class="edition-six-lead">Hier komt de volgende editie van Cloudspotter.</p>
         </section>
       </div>
     </main>
