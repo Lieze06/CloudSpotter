@@ -56,6 +56,11 @@ function showEdition(id) {
     screen.setAttribute("aria-hidden", String(!active));
     if (active) screen.scrollTop = 0;
   });
+  if (id === "edition-5") {
+    requestAnimationFrame(() => {
+      document.querySelector("#screen-5")?.dispatchEvent(new Event("scroll"));
+    });
+  }
 }
 
 function navigateToEdition(id) {
@@ -88,6 +93,100 @@ function syncEditionFromHash() {
 window.addEventListener("hashchange", syncEditionFromHash);
 window.addEventListener("popstate", syncEditionFromHash);
 syncEditionFromHash();
+
+const dayEdition = document.querySelector("#screen-5");
+const dayTime = document.querySelector("#day-time");
+const dayWeatherImage = document.querySelector("#day-weather-image");
+
+if (dayEdition && dayTime) {
+  function updateDayTime() {
+    const maxScroll = Math.max(1, dayEdition.scrollHeight - dayEdition.clientHeight);
+    const progress = Math.max(0, Math.min(1, dayEdition.scrollTop / maxScroll));
+    const totalMinutes = Math.min(1439, Math.floor(progress * 24 * 60));
+    const hour = Math.floor(totalMinutes / 60) % 24;
+    const minute = totalMinutes % 60;
+    const timeText = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+    dayTime.textContent = timeText;
+    dayTime.dateTime = timeText;
+
+    const decimalHour = hour + minute / 60;
+    const skyStops = [
+      { hour: 0, color: [16, 28, 58] },
+      { hour: 5, color: [38, 56, 92] },
+      { hour: 7, color: [111, 146, 180] },
+      { hour: 12, color: [135, 185, 216] },
+      { hour: 17, color: [196, 142, 128] },
+      { hour: 20, color: [72, 116, 159] },
+      { hour: 24, color: [16, 28, 58] }
+    ];
+
+    let leftStop = skyStops[0];
+    let rightStop = skyStops[skyStops.length - 1];
+    for (let index = 0; index < skyStops.length - 1; index += 1) {
+      if (decimalHour >= skyStops[index].hour && decimalHour <= skyStops[index + 1].hour) {
+        leftStop = skyStops[index];
+        rightStop = skyStops[index + 1];
+        break;
+      }
+    }
+
+    const blend = (decimalHour - leftStop.hour) / Math.max(1, rightStop.hour - leftStop.hour);
+    const skyColor = leftStop.color.map((channel, index) =>
+      Math.round(channel + (rightStop.color[index] - channel) * blend)
+    );
+    dayEdition.style.setProperty("--sky-r", String(skyColor[0]));
+    dayEdition.style.setProperty("--sky-g", String(skyColor[1]));
+    dayEdition.style.setProperty("--sky-b", String(skyColor[2]));
+
+    const phase = decimalHour < 5 || decimalHour >= 21
+      ? "night"
+      : decimalHour < 9
+        ? "morning"
+        : decimalHour < 17
+          ? "day"
+          : "evening";
+    dayEdition.dataset.phase = phase;
+
+    const viewportHour = progress * 24;
+    const moments = Array.from(dayEdition.querySelectorAll(".day-moment"));
+    let nearestMoment = null;
+    let nearestDistance = Infinity;
+
+    moments.forEach((moment) => {
+      const momentHour = Number.parseFloat(moment.style.getPropertyValue("--uur"));
+      const distance = Math.abs(momentHour - viewportHour);
+      if (distance < nearestDistance) {
+        nearestMoment = moment;
+        nearestDistance = distance;
+      }
+      moment.classList.toggle("is-active", false);
+    });
+
+    if (nearestMoment && nearestDistance < 2.25) {
+      nearestMoment.classList.add("is-active");
+      const nearestImage = nearestMoment.querySelector(".moment-cloud");
+      if (dayWeatherImage && nearestImage && dayWeatherImage.src !== nearestImage.src) {
+        dayWeatherImage.style.opacity = "0";
+        window.setTimeout(() => {
+          dayWeatherImage.src = nearestImage.src;
+          dayWeatherImage.alt = nearestImage.alt;
+          dayWeatherImage.style.opacity = "0.5";
+        }, 280);
+      }
+    }
+  }
+
+  dayEdition.addEventListener("scroll", updateDayTime, { passive: true });
+  window.addEventListener("resize", updateDayTime);
+
+  function keepDayTimeUpdated() {
+    if (document.body.dataset.edition === "5") updateDayTime();
+    requestAnimationFrame(keepDayTimeUpdated);
+  }
+
+  keepDayTimeUpdated();
+  updateDayTime();
+}
 
 let swipeStart;
 

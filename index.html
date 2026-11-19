@@ -50,7 +50,9 @@
         <span class="edition-arrow" aria-hidden="true">←</span>
         <span>EDITIE 04</span>
       </a>
-      <a class="wordmark-small" href="#edition-home" aria-label="Terug naar de voorpagina">CLOUDSPOTTER</a>
+      <a class="wordmark-small" href="#edition-home" aria-label="Terug naar de voorpagina">
+        <img src="assets/brand/cloudspotter-logo.png" alt="Cloudspotter">
+      </a>
       <a class="edition-next edition-next-two" href="#edition-2" aria-label="Ga naar editie 2">
         <span>EDITIE 02</span>
         <span class="edition-arrow" aria-hidden="true">→</span>
@@ -73,7 +75,7 @@
       <div class="edition-track">
         <section class="landing-screen edition-screen" id="screen-home" aria-labelledby="landing-title">
           <h1 class="landing-title" id="landing-title" aria-label="Cloud Spotter">
-            Cloud Sp<svg class="landing-wolk-o" viewBox="0 0 100 50" aria-hidden="true"><rect x="2" y="26" width="96" height="22" rx="11"/><circle cx="40" cy="26" r="17"/><circle cx="62" cy="20" r="13"/></svg>tter
+            <img src="assets/brand/cloudspotter-logo.png" alt="">
           </h1>
           <nav class="edition-cloud-nav" aria-label="Edities">
             <a class="edition-cloud edition-cloud-1" href="#edition-1" aria-label="Editie 1">
@@ -208,9 +210,69 @@
         </section>
 
         <section class="edition-five edition-screen" id="screen-5" aria-labelledby="edition-five-title" inert>
-          <p class="eyebrow">EDITIE 05 · BINNENKORT</p>
-          <h2 id="edition-five-title">De wolken gaan verder.</h2>
-          <p class="edition-five-lead">Hier komt de volgende editie van Cloudspotter.</p>
+          <div class="day-clock" aria-live="polite">
+            <span class="day-clock-kicker">EEN DAG IN DE LUCHT</span>
+            <time id="day-time" datetime="00:00">00:00</time>
+          </div>
+          <img id="day-weather-image" class="day-weather-image" src="assets/edition-2/clouds-08.jpeg" alt="">
+
+          <div class="day-timeline" aria-label="Waarnemingen door een hele dag">
+            <div class="hour-marks" aria-hidden="true">
+              <span style="--hour:0">00</span>
+              <span style="--hour:3">03</span>
+              <span style="--hour:6">06</span>
+              <span style="--hour:9">09</span>
+              <span style="--hour:12">12</span>
+              <span style="--hour:15">15</span>
+              <span style="--hour:18">18</span>
+              <span style="--hour:21">21</span>
+              <span style="--hour:24">24</span>
+            </div>
+
+            <article class="day-moment is-night" style="--uur:0.5">
+              <p class="moment-time">00:30</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-08.jpeg" alt="Donkere wolken om middernacht">
+              <h2>De lucht valt stil.</h2>
+              <p>Wolken worden donker, bijna zwart. Alleen een smalle maanlijn blijft zichtbaar.</p>
+            </article>
+            <article class="day-moment" style="--uur:6.25">
+              <p class="moment-time">06:15</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-06.jpeg" alt="Lichte wolken bij zonsopgang">
+              <h2>Het eerste licht.</h2>
+              <p>De horizon kleurt zacht. De wolken beginnen hun randen te vinden.</p>
+            </article>
+            <article class="day-moment is-rain" style="--uur:8.5" data-weather="rain">
+              <p class="moment-time">08:30</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-07.jpeg" alt="Dichte regenwolken om 08:30">
+              <div class="rain-field" aria-hidden="true"></div>
+              <h2>Wolken in beweging.</h2>
+              <p>De wind brengt dikke wolkenlaagjes. Daarna begint het te regenen.</p>
+            </article>
+            <article class="day-moment" style="--uur:12.5">
+              <p class="moment-time">12:30</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-03.jpeg" alt="Heldere wolken om het middaguur">
+              <h2>Het licht staat hoog.</h2>
+              <p>Om het middaguur zijn wolken het lichtst en lijken ze bijna te zweven.</p>
+            </article>
+            <article class="day-moment" style="--uur:17.25">
+              <p class="moment-time">17:15</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-02.jpeg" alt="Warme wolken bij het late zonlicht">
+              <h2>Licht valt terug.</h2>
+              <p>De lage zon maakt de wolken warmer en langer dan in de ochtend.</p>
+            </article>
+            <article class="day-moment" style="--uur:21.75">
+              <p class="moment-time">21:45</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-05.jpeg" alt="Donker wordende wolken bij avond">
+              <h2>De dag wordt nacht.</h2>
+              <p>Het laatste blauw verdwijnt. Bovenin blijft alleen de maan over.</p>
+            </article>
+            <article class="day-moment is-night" style="--uur:23.5">
+              <p class="moment-time">23:30</p>
+              <img class="moment-cloud" src="assets/edition-2/clouds-09.jpg" alt="Nachthemel om middernacht">
+              <h2>Middernacht op komst.</h2>
+              <p>De lucht sluit de dag weer af. Morgen begint hier beneden.</p>
+            </article>
+          </div>
         </section>
 
         <section class="edition-six edition-screen" id="screen-6" aria-labelledby="edition-six-title" inert>
