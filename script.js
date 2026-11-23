@@ -403,43 +403,164 @@ if (weatherReset) {
 }
 
 const editionTwo = document.querySelector("#edition-2");
-const imageCards = [...editionTwo.querySelectorAll(".image-card")];
-let draggedImage = null;
+const puzzleField = editionTwo?.querySelector(".puzzle-field");
+const puzzleBoard = puzzleField?.querySelector(".puzzle-board");
+const puzzleTray = puzzleField?.querySelector(".puzzle-tray");
+const puzzleStatus = puzzleField?.querySelector(".puzzle-status");
+const puzzleReset = puzzleField?.querySelector(".puzzle-reset");
 
-imageCards.forEach((card) => {
-  card.addEventListener("click", (event) => {
-    if (draggedImage) return;
-    const alreadyFocused = card.classList.contains("is-focused");
-    imageCards.forEach((other) => other.classList.remove("is-focused"));
-    if (!alreadyFocused) card.classList.add("is-focused");
-  });
+function setupPuzzle() {
+  if (!puzzleField || !puzzleBoard || !puzzleTray) return;
 
-  card.addEventListener("dragstart", (event) => {
-    draggedImage = card;
-    card.classList.add("is-dragging");
-    event.dataTransfer.effectAllowed = "move";
-  });
+  const pieceRects = [
+    [0, 0, .29, .38],
+    [.29, 0, .34, .38],
+    [.63, 0, .37, .38],
+    [0, .38, .29, .34],
+    [.29, .38, .34, .34],
+    [.63, .38, .37, .34],
+    [0, .72, .29, .28],
+    [.29, .72, .34, .28],
+    [.63, .72, .37, .28],
+  ];
+  let draggedPiece = null;
+  let dragOffset = { x: 0, y: 0 };
+  let placedCount = 0;
 
-  card.addEventListener("dragend", () => {
-    card.classList.remove("is-dragging");
-    window.setTimeout(() => { draggedImage = null; }, 100);
-  });
+  function boardSize() {
+    const rect = puzzleBoard.getBoundingClientRect();
+    return { width: rect.width, height: rect.height, left: rect.left, top: rect.top };
+  }
 
-  card.addEventListener("dragover", (event) => event.preventDefault());
+  function fieldPosition(element, left, top) {
+    const fieldRect = puzzleField.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
+    return {
+      left: left - fieldRect.left - (rect.width / 2),
+      top: top - fieldRect.top - (rect.height / 2),
+    };
+  }
 
-  card.addEventListener("drop", (event) => {
+  function clearPuzzle() {
+    puzzleBoard.querySelectorAll(".puzzle-slot").forEach((slot) => slot.remove());
+    puzzleField.querySelectorAll(".puzzle-piece").forEach((piece) => piece.remove());
+    placedCount = 0;
+  }
+
+  function createPuzzle() {
+    clearPuzzle();
+    const size = boardSize();
+    const trayRect = puzzleTray.getBoundingClientRect();
+
+    pieceRects.forEach(([x, y, width, height], index) => {
+      const slotLeft = size.width * x;
+      const slotTop = size.height * y;
+      const slotWidth = size.width * width;
+      const slotHeight = size.height * height;
+      const slot = document.createElement("div");
+      slot.className = "puzzle-slot";
+      slot.dataset.piece = String(index);
+      slot.style.left = `${x * 100}%`;
+      slot.style.top = `${y * 100}%`;
+      slot.style.width = `${width * 100}%`;
+      slot.style.height = `${height * 100}%`;
+      puzzleBoard.append(slot);
+
+      const piece = document.createElement("button");
+      piece.type = "button";
+      piece.className = "puzzle-piece";
+      piece.dataset.piece = String(index);
+      piece.setAttribute("aria-label", `Puzzelstuk ${index + 1}`);
+      const traySize = Math.min(68, trayRect.width / 11);
+      piece.style.width = `${traySize * (.82 + (index % 3) * .12)}px`;
+      piece.style.height = `${traySize * (.68 + (index % 2) * .14)}px`;
+      piece.style.backgroundSize = `${size.width}px ${size.height}px`;
+      piece.style.backgroundPosition = `-${slotLeft}px -${slotTop}px`;
+      puzzleField.append(piece);
+
+      const fieldRect = puzzleField.getBoundingClientRect();
+      const targetLeft = trayRect.left - fieldRect.left + 12 + index * ((trayRect.width - 24) / 9);
+      const targetTop = trayRect.top - fieldRect.top + (trayRect.height - piece.offsetHeight) / 2;
+      piece.style.left = `${targetLeft}px`;
+      piece.style.top = `${targetTop}px`;
+      piece.style.transform = `rotate(${[-4, 3, -2, 4, -3, 2, -5, 3, -1][index]}deg)`;
+      piece.dataset.trayLeft = String(targetLeft);
+      piece.dataset.trayTop = String(targetTop);
+    });
+
+    puzzleStatus.textContent = "0 van 9 stukken geplaatst.";
+  }
+
+  createPuzzle();
+
+  puzzleField.addEventListener("pointerdown", (event) => {
+    const piece = event.target.closest(".puzzle-piece");
+    if (!piece || piece.classList.contains("is-placed")) return;
+    event.preventEvent?.();
     event.preventDefault();
-    if (!draggedImage || draggedImage === card) return;
-    const field = card.parentElement;
-    const draggedIndex = [...field.children].indexOf(draggedImage);
-    const targetIndex = [...field.children].indexOf(card);
-    if (draggedIndex < targetIndex) {
-      field.insertBefore(draggedImage, card.nextElementSibling);
+    draggedPiece = piece;
+    const rect = piece.getBoundingClientRect();
+    dragOffset = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    piece.classList.add("is-dragging");
+    piece.setPointerCapture?.(event.pointerId);
+  });
+
+  puzzleField.addEventListener("pointermove", (event) => {
+    if (!draggedPiece) return;
+    const fieldRect = puzzleField.getBoundingClientRect();
+    draggedPiece.style.left = `${event.clientX - fieldRect.left - dragOffset.x}px`;
+    draggedPiece.style.top = `${event.clientY - fieldRect.top - dragOffset.y}px`;
+  });
+
+  puzzleField.addEventListener("pointerup", (event) => {
+    if (!draggedPiece) return;
+    const piece = draggedPiece;
+    draggedPiece = null;
+    piece.classList.remove("is-dragging");
+
+    const rect = piece.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const boardRect = puzzleBoard.getBoundingClientRect();
+    const slot = [...puzzleBoard.querySelectorAll(".puzzle-slot")].find((candidate) => {
+      if (candidate.classList.contains("is-filled")) return false;
+      const slotRect = candidate.getBoundingClientRect();
+      return candidate.dataset.piece === piece.dataset.piece
+        && centerX >= slotRect.left
+        && centerX <= slotRect.right
+        && centerY >= slotRect.top
+        && centerY <= slotRect.bottom;
+    });
+
+    if (slot) {
+      const slotRect = slot.getBoundingClientRect();
+      const fieldRect = puzzleField.getBoundingClientRect();
+      const [x, y, width, height] = pieceRects[Number(piece.dataset.piece)];
+      const size = boardSize();
+      piece.classList.add("is-placed");
+      piece.style.left = `${slotRect.left - fieldRect.left}px`;
+      piece.style.top = `${slotRect.top - fieldRect.top}px`;
+      piece.style.width = `${slotRect.width}px`;
+      piece.style.height = `${slotRect.height}px`;
+      piece.style.transform = "none";
+      piece.style.backgroundSize = `${size.width}px ${size.height}px`;
+      piece.style.backgroundPosition = `-${size.width * x}px -${size.height * y}px`;
+      slot.classList.add("is-filled");
+      placedCount += 1;
+      puzzleStatus.textContent = placedCount === 9
+        ? "De wolkenfoto is compleet!"
+        : `${placedCount} van 9 stukken geplaatst.`;
     } else {
-      field.insertBefore(draggedImage, card);
+      piece.style.left = piece.dataset.trayLeft;
+      piece.style.top = piece.dataset.trayTop;
+      piece.style.transform = `rotate(${[-4, 3, -2, 4, -3, 2, -5, 3, -1][Number(piece.dataset.piece)]}deg)`;
     }
   });
-});
+
+  puzzleReset.addEventListener("click", createPuzzle);
+}
+
+setupPuzzle();
 
 // Edition 3: a calm, desktop drawing surface and a touch version on mobile.
 function setupLightCanvas(canvas) {
