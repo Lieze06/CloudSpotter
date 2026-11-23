@@ -518,7 +518,7 @@ function updateDayClock() {
   else if (hour < 20) eventText = "De lucht wordt warmer van kleur. Wolken verzamelen zich aan de horizon.";
   else eventText = "Het laatste licht valt weg. De dag wordt stil en donker.";
   document.querySelector(".weather-event").textContent = eventText;
-  document.querySelector(".day-progress").innerHTML = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} <span aria-hidden="true">↓</span>`;
+  document.querySelector(".day-progress").innerHTML = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} <span aria-hidden="true">â†“</span>`;
 }
 
 dayScroll.addEventListener("scroll", updateDayClock, { passive: true });
