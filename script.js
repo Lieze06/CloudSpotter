@@ -284,6 +284,7 @@ if (editionLead) {
 
 const weatherSymbols = [...document.querySelectorAll(".weather-symbol")];
 const weatherZones = [...document.querySelectorAll(".weather-zone")];
+const totalWeatherSymbols = weatherSymbols.length;
 const rankingStatus = document.querySelector(".ranking-status");
 let draggedWeather = null;
 
@@ -321,7 +322,7 @@ function celebrate() {
 
 function checkWeatherComplete() {
   const assigned = weatherZones.reduce((count, zone) => count + zone.querySelectorAll(".weather-symbol").length, 0);
-  if (assigned >= weatherSymbols.length) {
+  if (assigned >= totalWeatherSymbols) {
     rankingStatus.textContent = "Je hebt jouw volgorde compleet gemaakt.";
     celebrate();
   } else {
@@ -409,155 +410,209 @@ const puzzleTray = puzzleField?.querySelector(".puzzle-tray");
 const puzzleStatus = puzzleField?.querySelector(".puzzle-status");
 const puzzleReset = puzzleField?.querySelector(".puzzle-reset");
 
+const puzzles = [
+  {
+    photo: "assets/edition-2/clouds-04.jpeg",
+    cols: 3,
+    rows: 3,
+    title: "Vind de wolken.",
+  },
+  {
+    photo: "assets/edition-2/clouds-01.jpeg",
+    cols: 4,
+    rows: 3,
+    title: "Leg de wolken terug.",
+  },
+  {
+    photo: "assets/edition-2/clouds-02.jpeg",
+    cols: 4,
+    rows: 4,
+    title: "De moeilijkste puzzel.",
+  },
+];
+
+let currentPuzzleIndex = 0;
+
 function setupPuzzle() {
   if (!puzzleField || !puzzleBoard || !puzzleTray) return;
 
-  const pieceRects = [
-    [0, 0, .29, .38],
-    [.29, 0, .34, .38],
-    [.63, 0, .37, .38],
-    [0, .38, .29, .34],
-    [.29, .38, .34, .34],
-    [.63, .38, .37, .34],
-    [0, .72, .29, .28],
-    [.29, .72, .34, .28],
-    [.63, .72, .37, .28],
-  ];
-  let draggedPiece = null;
-  let dragOffset = { x: 0, y: 0 };
-  let placedCount = 0;
+  const puzzleNext = puzzleField.querySelector(".puzzle-next");
+  const puzzleCurrent = puzzleField.querySelector(".puzzle-current");
+  const puzzleTotal = puzzleField.querySelector(".puzzle-total");
 
-  function boardSize() {
-    const rect = puzzleBoard.getBoundingClientRect();
-    return { width: rect.width, height: rect.height, left: rect.left, top: rect.top };
-  }
+  if (puzzleTotal) puzzleTotal.textContent = String(puzzles.length);
 
-  function fieldPosition(element, left, top) {
-    const fieldRect = puzzleField.getBoundingClientRect();
-    const rect = element.getBoundingClientRect();
-    return {
-      left: left - fieldRect.left - (rect.width / 2),
-      top: top - fieldRect.top - (rect.height / 2),
-    };
-  }
+  let dragged = null;
+  let placed = 0;
+  let puzzlePieces = [];
 
-  function clearPuzzle() {
-    puzzleBoard.querySelectorAll(".puzzle-slot").forEach((slot) => slot.remove());
-    puzzleField.querySelectorAll(".puzzle-piece").forEach((piece) => piece.remove());
-    placedCount = 0;
-  }
+  function buildPuzzle() {
+    const config = puzzles[currentPuzzleIndex];
+    const { photo, cols, rows, title } = config;
 
-  function createPuzzle() {
-    clearPuzzle();
-    const size = boardSize();
-    const trayRect = puzzleTray.getBoundingClientRect();
+    const h2 = puzzleField.querySelector("h2");
+    if (h2) h2.textContent = title;
+    if (puzzleCurrent) puzzleCurrent.textContent = String(currentPuzzleIndex + 1);
 
-    pieceRects.forEach(([x, y, width, height], index) => {
-      const slotLeft = size.width * x;
-      const slotTop = size.height * y;
-      const slotWidth = size.width * width;
-      const slotHeight = size.height * height;
+    puzzlePieces = [];
+    const pieceW = 100 / cols;
+    const pieceH = 100 / rows;
+
+    for (let r = 0; r < rows; r += 1) {
+      for (let c = 0; c < cols; c += 1) {
+        puzzlePieces.push({
+          x: c * pieceW,
+          y: r * pieceH,
+          w: pieceW,
+          h: pieceH,
+        });
+      }
+    }
+
+    puzzleBoard.replaceChildren();
+    puzzleTray.replaceChildren();
+    placed = 0;
+
+    if (puzzleNext) puzzleNext.disabled = true;
+    if (puzzleStatus) puzzleStatus.textContent = `0 van ${puzzlePieces.length} stukken geplaatst.`;
+
+    puzzlePieces.forEach((part, index) => {
       const slot = document.createElement("div");
       slot.className = "puzzle-slot";
-      slot.dataset.piece = String(index);
-      slot.style.left = `${x * 100}%`;
-      slot.style.top = `${y * 100}%`;
-      slot.style.width = `${width * 100}%`;
-      slot.style.height = `${height * 100}%`;
+      slot.dataset.index = String(index);
+      slot.style.left = `${part.x}%`;
+      slot.style.top = `${part.y}%`;
+      slot.style.width = `${part.w}%`;
+      slot.style.height = `${part.h}%`;
       puzzleBoard.append(slot);
 
       const piece = document.createElement("button");
       piece.type = "button";
       piece.className = "puzzle-piece";
-      piece.dataset.piece = String(index);
+      piece.dataset.index = String(index);
       piece.setAttribute("aria-label", `Puzzelstuk ${index + 1}`);
-      const traySize = Math.min(68, trayRect.width / 11);
-      piece.style.width = `${traySize * (.82 + (index % 3) * .12)}px`;
-      piece.style.height = `${traySize * (.68 + (index % 2) * .14)}px`;
-      piece.style.backgroundSize = `${size.width}px ${size.height}px`;
-      piece.style.backgroundPosition = `-${slotLeft}px -${slotTop}px`;
-      puzzleField.append(piece);
-
-      const fieldRect = puzzleField.getBoundingClientRect();
-      const targetLeft = trayRect.left - fieldRect.left + 12 + index * ((trayRect.width - 24) / 9);
-      const targetTop = trayRect.top - fieldRect.top + (trayRect.height - piece.offsetHeight) / 2;
-      piece.style.left = `${targetLeft}px`;
-      piece.style.top = `${targetTop}px`;
-      piece.style.transform = `rotate(${[-4, 3, -2, 4, -3, 2, -5, 3, -1][index]}deg)`;
-      piece.dataset.trayLeft = String(targetLeft);
-      piece.dataset.trayTop = String(targetTop);
+      piece.style.setProperty("--piece-x", `${part.x}%`);
+      piece.style.setProperty("--piece-y", `${part.y}%`);
+      piece.style.setProperty("--piece-w", `${part.w}%`);
+      piece.style.setProperty("--piece-h", `${part.h}%`);
+      piece.style.width = "80px";
+      piece.style.height = "80px";
+      piece.style.backgroundImage = `url("${photo}")`;
+      puzzleTray.append(piece);
     });
 
-    puzzleStatus.textContent = "0 van 9 stukken geplaatst.";
+    requestAnimationFrame(() => {
+      puzzleTray.querySelectorAll(".puzzle-piece").forEach(updatePieceImage);
+    });
   }
 
-  createPuzzle();
+  function updatePieceImage(piece) {
+    const part = puzzlePieces[Number(piece.dataset.index)];
+    const boardRect = puzzleBoard.getBoundingClientRect();
+    piece.style.backgroundSize = `${boardRect.width}px ${boardRect.height}px`;
+    piece.style.backgroundPosition =
+      `-${boardRect.width * part.x / 100}px -${boardRect.height * part.y / 100}px`;
+  }
+
+  function updateStatus() {
+    if (puzzleStatus) {
+      puzzleStatus.textContent = placed === puzzlePieces.length
+        ? "De wolkenfoto is compleet!"
+        : `${placed} van ${puzzlePieces.length} stukken geplaatst.`;
+    }
+    if (puzzleNext) {
+      puzzleNext.disabled = placed < puzzlePieces.length;
+    }
+  }
+
+  buildPuzzle();
 
   puzzleField.addEventListener("pointerdown", (event) => {
     const piece = event.target.closest(".puzzle-piece");
-    if (!piece || piece.classList.contains("is-placed")) return;
-    event.preventEvent?.();
+    if (!piece) return;
     event.preventDefault();
-    draggedPiece = piece;
+    dragged = piece;
     const rect = piece.getBoundingClientRect();
-    dragOffset = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    piece.dataset.offsetX = String(event.clientX - rect.left);
+    piece.dataset.offsetY = String(event.clientY - rect.top);
+    puzzleField.append(piece);
     piece.classList.add("is-dragging");
+    piece.style.position = "fixed";
+    piece.style.left = `${event.clientX - Number(piece.dataset.offsetX)}px`;
+    piece.style.top = `${event.clientY - Number(piece.dataset.offsetY)}px`;
     piece.setPointerCapture?.(event.pointerId);
   });
 
   puzzleField.addEventListener("pointermove", (event) => {
-    if (!draggedPiece) return;
-    const fieldRect = puzzleField.getBoundingClientRect();
-    draggedPiece.style.left = `${event.clientX - fieldRect.left - dragOffset.x}px`;
-    draggedPiece.style.top = `${event.clientY - fieldRect.top - dragOffset.y}px`;
+    if (!dragged) return;
+    dragged.style.left = `${event.clientX - Number(dragged.dataset.offsetX)}px`;
+    dragged.style.top = `${event.clientY - Number(dragged.dataset.offsetY)}px`;
   });
 
   puzzleField.addEventListener("pointerup", (event) => {
-    if (!draggedPiece) return;
-    const piece = draggedPiece;
-    draggedPiece = null;
+    if (!dragged) return;
+    const piece = dragged;
+    dragged = null;
     piece.classList.remove("is-dragging");
 
     const rect = piece.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const boardRect = puzzleBoard.getBoundingClientRect();
     const slot = [...puzzleBoard.querySelectorAll(".puzzle-slot")].find((candidate) => {
       if (candidate.classList.contains("is-filled")) return false;
       const slotRect = candidate.getBoundingClientRect();
-      return candidate.dataset.piece === piece.dataset.piece
-        && centerX >= slotRect.left
+      return centerX >= slotRect.left
         && centerX <= slotRect.right
         && centerY >= slotRect.top
         && centerY <= slotRect.bottom;
     });
 
     if (slot) {
-      const slotRect = slot.getBoundingClientRect();
-      const fieldRect = puzzleField.getBoundingClientRect();
-      const [x, y, width, height] = pieceRects[Number(piece.dataset.piece)];
-      const size = boardSize();
-      piece.classList.add("is-placed");
-      piece.style.left = `${slotRect.left - fieldRect.left}px`;
-      piece.style.top = `${slotRect.top - fieldRect.top}px`;
-      piece.style.width = `${slotRect.width}px`;
-      piece.style.height = `${slotRect.height}px`;
+      slot.append(piece);
+      piece.className = "puzzle-piece is-placed";
+      piece.style.position = "absolute";
+      piece.style.inset = "0";
+      piece.style.width = "100%";
+      piece.style.height = "100%";
+      piece.style.left = "0";
+      piece.style.top = "0";
+      piece.style.margin = "0";
       piece.style.transform = "none";
-      piece.style.backgroundSize = `${size.width}px ${size.height}px`;
-      piece.style.backgroundPosition = `-${size.width * x}px -${size.height * y}px`;
+      piece.style.border = "0";
+      piece.style.borderRadius = "0";
+      updatePieceImage(piece);
       slot.classList.add("is-filled");
-      placedCount += 1;
-      puzzleStatus.textContent = placedCount === 9
-        ? "De wolkenfoto is compleet!"
-        : `${placedCount} van 9 stukken geplaatst.`;
+      placed += 1;
+      updateStatus();
+      if (placed === puzzlePieces.length && currentPuzzleIndex === puzzles.length - 1) {
+        celebrate();
+      }
     } else {
-      piece.style.left = piece.dataset.trayLeft;
-      piece.style.top = piece.dataset.trayTop;
-      piece.style.transform = `rotate(${[-4, 3, -2, 4, -3, 2, -5, 3, -1][Number(piece.dataset.piece)]}deg)`;
+      puzzleTray.append(piece);
+      piece.className = "puzzle-piece";
+      piece.style.position = "relative";
+      piece.style.left = "auto";
+      piece.style.top = "auto";
+      piece.style.width = "80px";
+      piece.style.height = "80px";
+      updatePieceImage(piece);
     }
   });
 
-  puzzleReset.addEventListener("click", createPuzzle);
+  puzzleReset?.addEventListener("click", buildPuzzle);
+
+  if (puzzleNext) {
+    puzzleNext.addEventListener("click", () => {
+      if (currentPuzzleIndex < puzzles.length - 1) {
+        currentPuzzleIndex += 1;
+        buildPuzzle();
+      }
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    puzzleTray.querySelectorAll(".puzzle-piece").forEach(updatePieceImage);
+  });
 }
 
 setupPuzzle();
@@ -629,7 +684,7 @@ function updateDayClock() {
 
   const isNight = hour < 8 || hour >= 20;
   editionFive.classList.toggle("is-night", isNight);
-  editionFive.classList.toggle("is-raining", hour >= 10 && hour <= 18);
+  editionFive.classList.toggle("is-raining", (hour >= 14 && hour <= 16) || (hour >= 2 && hour <= 4));
 
   let eventText;
   if (hour < 5) eventText = "De hemel is diep donker. Verre wolken verdwijnen in de nacht.";
@@ -639,7 +694,7 @@ function updateDayClock() {
   else if (hour < 20) eventText = "De lucht wordt warmer van kleur. Wolken verzamelen zich aan de horizon.";
   else eventText = "Het laatste licht valt weg. De dag wordt stil en donker.";
   document.querySelector(".weather-event").textContent = eventText;
-  document.querySelector(".day-progress").innerHTML = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} <span aria-hidden="true">â†“</span>`;
+  document.querySelector(".day-progress").innerHTML = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} <span aria-hidden="true">↓</span>`;
 }
 
 dayScroll.addEventListener("scroll", updateDayClock, { passive: true });

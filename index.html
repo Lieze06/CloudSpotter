@@ -1,19 +1,26 @@
-<html lang="nl"><head>
+<!doctype html>
+<html lang="nl">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0878c5">
     <meta name="description" content="Cloudspotter — elke week een nieuwe kijk op wat er in de lucht te zien is.">
     <title>Cloudspotter — kijk omhoog</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer=""></script>
+    <script src="script.js" defer></script>
   </head>
   <body>
     <div class="click-clouds" aria-hidden="true"></div>
     <main id="site" aria-label="Cloudspotter">
-      <section class="screen home-screen is-active" id="home" aria-label="Cloudspotter edities" aria-hidden="false">
+      <section class="screen home-screen is-active" id="home" aria-label="Cloudspotter edities">
         <div class="home-artboard">
           <div class="home-logo">CloudSpotter</div>
-          <img class="artwork-source" src="assets/artwork/cover-artwork.png" alt="" draggable="false">
+          <img
+            class="artwork-source"
+            src="assets/artwork/cover-artwork.png"
+            alt=""
+            draggable="false"
+          >
           <canvas class="artwork-static" aria-hidden="true"></canvas>
           <nav class="cloud-index" aria-label="Kies een editie">
             <a class="edition-cloud cloud-1" href="#edition-1" aria-label="Open editie 1: tekst">
@@ -46,19 +53,21 @@
         <p class="artwork-status" role="status" aria-live="polite"></p>
       </section>
 
-      <section class="screen edition-screen edition-one" id="edition-1" aria-labelledby="edition-one-title" inert="" aria-hidden="true">
+      <section class="screen edition-screen edition-one" id="edition-1" aria-labelledby="edition-one-title" inert>
         <header class="page-nav">
           <a class="nav-home" href="#home" data-route="home">Cloudspotter</a>
           <span class="nav-edition">EDITIE 01 / TEKST</span>
           <a class="nav-next" href="#edition-2">Volgende <span aria-hidden="true">→</span></a>
         </header>
         <div class="edition-one-content">
-          <h1 class="cloud-wordmark" id="edition-one-title" aria-label="Cloudspotter"><span class="title-letter" aria-hidden="true">C</span><span class="title-letter" aria-hidden="true">l</span><span class="title-letter" aria-hidden="true">o</span><span class="title-letter" aria-hidden="true">u</span><span class="title-letter" aria-hidden="true">d</span><span class="title-letter" aria-hidden="true">s</span><span class="title-letter" aria-hidden="true">p</span><span class="title-letter" aria-hidden="true">o</span><span class="title-letter" aria-hidden="true">t</span><span class="title-letter" aria-hidden="true">t</span><span class="title-letter" aria-hidden="true">e</span><span class="title-letter" aria-hidden="true">r</span></h1>
-          <p class="edition-lead" aria-label="Elke week een nieuwe editie over het weer."><span class="lead-letter">E</span><span class="lead-letter">l</span><span class="lead-letter">k</span><span class="lead-letter">e</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">w</span><span class="lead-letter">e</span><span class="lead-letter">e</span><span class="lead-letter">k</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">e</span><span class="lead-letter">e</span><span class="lead-letter">n</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">n</span><span class="lead-letter">i</span><span class="lead-letter">e</span><span class="lead-letter">u</span><span class="lead-letter">w</span><span class="lead-letter">e</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">e</span><span class="lead-letter">d</span><span class="lead-letter">i</span><span class="lead-letter">t</span><span class="lead-letter">i</span><span class="lead-letter">e</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">o</span><span class="lead-letter">v</span><span class="lead-letter">e</span><span class="lead-letter">r</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">h</span><span class="lead-letter">e</span><span class="lead-letter">t</span><span class="lead-space" aria-hidden="true"> </span><span class="lead-letter">w</span><span class="lead-letter">e</span><span class="lead-letter">e</span><span class="lead-letter">r</span><span class="lead-letter">.</span></p>
+          <h1 class="cloud-wordmark" id="edition-one-title">Cloudspotter</h1>
+          <p class="edition-lead">
+            Elke week een nieuwe editie over het weer.
+          </p>
         </div>
       </section>
 
-      <section class="screen edition-screen edition-two" id="edition-2" aria-labelledby="edition-two-title" inert="" aria-hidden="true">
+      <section class="screen edition-screen edition-two" id="edition-2" aria-labelledby="edition-two-title" inert>
         <header class="page-nav">
           <a class="nav-home" href="#home" data-route="home">← Terug naar de lucht</a>
           <span class="nav-edition">EDITIE 02 / BEELD</span>
@@ -70,16 +79,20 @@
             <div class="puzzle-copy">
               <p class="eyebrow">EDITIE 02 · LEG DE FOTO</p>
               <h2>Vind de wolken.</h2>
-              <p class="puzzle-status" aria-live="polite">0 van 9 stukken geplaatst.</p>
+              <p class="puzzle-status" aria-live="polite">Sleep stukken naar de juiste plek.</p>
+              <div class="puzzle-nav">
+                <span class="puzzle-counter">Puzzel <span class="puzzle-current">1</span> van <span class="puzzle-total">3</span></span>
+                <button class="puzzle-next" type="button">Volgende puzzel →</button>
+              </div>
               <button class="puzzle-reset" type="button">Opnieuw beginnen</button>
             </div>
-            <div class="puzzle-board" aria-label="Puzzelbord"><div class="puzzle-slot" data-piece="0" style="left: 0%; top: 0%; width: 29%; height: 38%;"></div><div class="puzzle-slot" data-piece="1" style="left: 29%; top: 0%; width: 34%; height: 38%;"></div><div class="puzzle-slot" data-piece="2" style="left: 63%; top: 0%; width: 37%; height: 38%;"></div><div class="puzzle-slot" data-piece="3" style="left: 0%; top: 38%; width: 29%; height: 34%;"></div><div class="puzzle-slot" data-piece="4" style="left: 29%; top: 38%; width: 34%; height: 34%;"></div><div class="puzzle-slot" data-piece="5" style="left: 63%; top: 38%; width: 37%; height: 34%;"></div><div class="puzzle-slot" data-piece="6" style="left: 0%; top: 72%; width: 29%; height: 28%;"></div><div class="puzzle-slot" data-piece="7" style="left: 29%; top: 72%; width: 34%; height: 28%;"></div><div class="puzzle-slot" data-piece="8" style="left: 63%; top: 72%; width: 37%; height: 28%;"></div></div>
+            <div class="puzzle-board" aria-label="Puzzelbord"></div>
             <div class="puzzle-tray" aria-label="Losse puzzelstukken"></div>
-          <button type="button" class="puzzle-piece" data-piece="0" aria-label="Puzzelstuk 1" data-tray-left="273.6953125" data-tray-top="516.8046875" style="width: 46.2933px; height: 38.3896px; background-size: 374px 280.5px; background-position: 0px 0px; left: 273.695px; top: 516.805px; transform: rotate(-4deg);"></button><button type="button" class="puzzle-piece" data-piece="1" aria-label="Puzzelstuk 2" data-tray-left="340.0295138888889" data-tray-top="512.8046875" style="width: 53.0679px; height: 46.2933px; background-size: 374px 280.5px; background-position: -108.46px 0px; left: 340.03px; top: 512.805px; transform: rotate(3deg);"></button><button type="button" class="puzzle-piece" data-piece="2" aria-label="Puzzelstuk 3" data-tray-left="406.36371527777777" data-tray-top="516.8046875" style="width: 59.8426px; height: 38.3896px; background-size: 374px 280.5px; background-position: -235.62px 0px; left: 406.364px; top: 516.805px; transform: rotate(-2deg);"></button><button type="button" class="puzzle-piece" data-piece="3" aria-label="Puzzelstuk 4" data-tray-left="472.69791666666663" data-tray-top="512.8046875" style="width: 46.2933px; height: 46.2933px; background-size: 374px 280.5px; background-position: 0px -106.59px; left: 472.698px; top: 512.805px; transform: rotate(4deg);"></button><button type="button" class="puzzle-piece" data-piece="4" aria-label="Puzzelstuk 5" data-tray-left="539.0321180555555" data-tray-top="516.8046875" style="width: 53.0679px; height: 38.3896px; background-size: 374px 280.5px; background-position: -108.46px -106.59px; left: 539.032px; top: 516.805px; transform: rotate(-3deg);"></button><button type="button" class="puzzle-piece" data-piece="5" aria-label="Puzzelstuk 6" data-tray-left="605.3663194444445" data-tray-top="512.8046875" style="width: 59.8426px; height: 46.2933px; background-size: 374px 280.5px; background-position: -235.62px -106.59px; left: 605.366px; top: 512.805px; transform: rotate(2deg);"></button><button type="button" class="puzzle-piece" data-piece="6" aria-label="Puzzelstuk 7" data-tray-left="671.7005208333333" data-tray-top="516.8046875" style="width: 46.2933px; height: 38.3896px; background-size: 374px 280.5px; background-position: 0px -201.96px; left: 671.701px; top: 516.805px; transform: rotate(-5deg);"></button><button type="button" class="puzzle-piece" data-piece="7" aria-label="Puzzelstuk 8" data-tray-left="738.0347222222222" data-tray-top="512.8046875" style="width: 53.0679px; height: 46.2933px; background-size: 374px 280.5px; background-position: -108.46px -201.96px; left: 738.035px; top: 512.805px; transform: rotate(3deg);"></button><button type="button" class="puzzle-piece" data-piece="8" aria-label="Puzzelstuk 9" data-tray-left="804.3689236111111" data-tray-top="516.8046875" style="width: 59.8426px; height: 38.3896px; background-size: 374px 280.5px; background-position: -235.62px -201.96px; left: 804.369px; top: 516.805px; transform: rotate(-1deg);"></button></div>
+          </div>
         </div>
       </section>
 
-      <section class="screen edition-screen edition-three" id="edition-3" aria-labelledby="edition-three-title" inert="" aria-hidden="true">
+      <section class="screen edition-screen edition-three" id="edition-3" aria-labelledby="edition-three-title" inert>
         <header class="page-nav">
           <a class="nav-home" href="#home" data-route="home">← Terug naar de lucht</a>
           <span class="nav-edition">EDITIE 03 / SCHERM</span>
@@ -94,13 +107,13 @@
           </div>
           <figure class="edition-three-image">
             <img src="assets/edition-3/cloud-drawing.jpg" alt="Wolken boven een blauwe hemel, gezien van onderaf">
-            <canvas class="edition-three-canvas" aria-label="Teken licht op de wolken" width="819" height="617"></canvas>
+            <canvas class="edition-three-canvas" aria-label="Teken licht op de wolken"></canvas>
             <figcaption>Een moment uit de lucht, op groot scherm.</figcaption>
           </figure>
         </div>
         <div class="edition-three-mobile">
           <img src="assets/edition-3/cloud-drawing.jpg" alt="Wolken vullen het scherm, gezien van onderaf">
-          <canvas class="edition-three-mobile-canvas" aria-label="Tik op de wolken om licht te tekenen" width="0" height="0"></canvas>
+          <canvas class="edition-three-mobile-canvas" aria-label="Tik op de wolken om licht te tekenen"></canvas>
           <div class="mobile-edition-copy">
             <p class="eyebrow">EDITIE 03 · OP JE TELEFOON</p>
             <h1>Kom dichterbij.</h1>
@@ -109,7 +122,7 @@
         </div>
       </section>
 
-      <section class="screen edition-screen edition-four" id="edition-4" aria-labelledby="edition-four-title" inert="" aria-hidden="true">
+      <section class="screen edition-screen edition-four" id="edition-4" aria-labelledby="edition-four-title" inert>
         <header class="page-nav">
           <a class="nav-home" href="#home" data-route="home">← Terug naar de lucht</a>
           <span class="nav-edition">EDITIE 04 / JIJ DOET MEE</span>
@@ -121,17 +134,17 @@
               <button class="weather-symbol" type="button" draggable="true" data-weather="zon" aria-label="Zonnig">☀</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="zonnig-wolkig" aria-label="Zonnig en bewolkt">🌤</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="regen" aria-label="Regen">🌧</button>
-              <button class="weather-symbol" type="button" draggable="true" data-weather="hagel-sneeuw" aria-label="Sneeuw en hagel">🌨</button>
+
               <button class="weather-symbol" type="button" draggable="true" data-weather="bewolkt" aria-label="Bewolkt">☁</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="wolken-regen" aria-label="Bewolkt met regen">☔</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="storm" aria-label="Storm">⛈</button>
-              <button class="weather-symbol weather-symbol-snow-storm" type="button" draggable="true" data-weather="sneeuw-onweer" aria-label="Sneeuw en bliksem"><span class="symbol-cloud">☁</span><span class="symbol-bolt">ϟ</span></button>
+
               <button class="weather-symbol weather-symbol-snow" type="button" draggable="true" data-weather="sneeuw" aria-label="Sneeuw">❄</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="bliksem" aria-label="Bliksem">🌩</button>
-              <button class="weather-symbol weather-symbol-storm-snow" type="button" draggable="true" data-weather="onweer-sneeuw" aria-label="Onweer en sneeuw"><span class="symbol-cloud">☁</span><span class="symbol-bolt">ϟ</span><span class="symbol-snow">❄</span></button>
-              <button class="weather-symbol" type="button" draggable="true" data-weather="wind" aria-label="Winderig">≋</button>
-              <button class="weather-symbol weather-symbol-moon" type="button" draggable="true" data-weather="nacht-wolk" aria-label="Wolk in de nacht"><span class="symbol-cloud">☁</span><span class="symbol-moon">◔</span></button>
-              <button class="weather-symbol weather-symbol-mist" type="button" draggable="true" data-weather="mist" aria-label="Mist"><span class="symbol-mist">≋</span><span class="symbol-cloud">☁</span></button>
+
+
+
+
               <button class="weather-symbol" type="button" draggable="true" data-weather="nacht-wind" aria-label="Nachtwind">🌬</button>
               <button class="weather-symbol" type="button" draggable="true" data-weather="wolk" aria-label="Losse wolk">☁</button>
             </div>
@@ -148,7 +161,7 @@
         </div>
       </section>
 
-      <section class="screen edition-screen edition-five is-night" id="edition-5" aria-labelledby="edition-five-title" inert="" aria-hidden="true">
+      <section class="screen edition-screen edition-five" id="edition-5" aria-labelledby="edition-five-title" inert>
         <header class="page-nav">
           <a class="nav-home" href="#home" data-route="home">← Terug naar de lucht</a>
           <span class="nav-edition">EDITIE 05 / DOOR DE DAG</span>
@@ -158,23 +171,23 @@
           <div class="day-track">
             <article class="day-scene">
               <div class="day-sky">
-                <div class="rain-layer" aria-hidden="true"><i class="rain-drop" style="left: 16.1241%; --rain-height: 55.20045434412353px; --rain-duration: 0.8413719232675335s; --rain-delay: -1.3819894673163795s;"></i><i class="rain-drop" style="left: 97.2412%; --rain-height: 62.499817657076655px; --rain-duration: 0.7766798946842719s; --rain-delay: -0.12936377555742692s;"></i><i class="rain-drop" style="left: 30.9858%; --rain-height: 42.512840126976165px; --rain-duration: 0.8917915192835236s; --rain-delay: -0.1314192729434291s;"></i><i class="rain-drop" style="left: 63.5519%; --rain-height: 47.007421054703684px; --rain-duration: 0.9622369092722267s; --rain-delay: -0.6956303183313246s;"></i><i class="rain-drop" style="left: 42.1055%; --rain-height: 50.76271592668365px; --rain-duration: 0.7396532670846674s; --rain-delay: -1.0026275836349796s;"></i><i class="rain-drop" style="left: 89.8503%; --rain-height: 44.19273881202915px; --rain-duration: 0.9141690051738798s; --rain-delay: -0.7304084688366553s;"></i><i class="rain-drop" style="left: 46.6624%; --rain-height: 59.349953947797985px; --rain-duration: 1.0054865066892027s; --rain-delay: -0.4481307653882541s;"></i><i class="rain-drop" style="left: 18.4026%; --rain-height: 57.60682593996037px; --rain-duration: 0.8453175243247378s; --rain-delay: -0.054232483601401114s;"></i><i class="rain-drop" style="left: 31.1358%; --rain-height: 70.09851659341415px; --rain-duration: 1.2794421835398235s; --rain-delay: -1.3919496624375303s;"></i><i class="rain-drop" style="left: 50.6725%; --rain-height: 33.24844366096289px; --rain-duration: 1.0527165138693602s; --rain-delay: -0.1460788843348357s;"></i><i class="rain-drop" style="left: 60.3447%; --rain-height: 35.67897725248298px; --rain-duration: 0.8822031639143826s; --rain-delay: -0.15052914888414262s;"></i><i class="rain-drop" style="left: 9.56688%; --rain-height: 75.65768785177829px; --rain-duration: 1.0569649666544838s; --rain-delay: -0.8216978643085739s;"></i><i class="rain-drop" style="left: 14.5517%; --rain-height: 53.896674634861675px; --rain-duration: 1.0013257685534644s; --rain-delay: -1.0676070804421098s;"></i><i class="rain-drop" style="left: 5.93073%; --rain-height: 54.08972382554159px; --rain-duration: 1.397905346589912s; --rain-delay: -0.692222407160483s;"></i><i class="rain-drop" style="left: 80.4781%; --rain-height: 36.5775248035217px; --rain-duration: 1.1529927387208576s; --rain-delay: -0.19835101943676225s;"></i><i class="rain-drop" style="left: 20.1019%; --rain-height: 43.45454164754999px; --rain-duration: 0.8685602654465019s; --rain-delay: -0.4562070739796199s;"></i><i class="rain-drop" style="left: 22.2181%; --rain-height: 67.66137819464115px; --rain-duration: 0.7004472447179456s; --rain-delay: -1.2367570801426597s;"></i><i class="rain-drop" style="left: 70.0993%; --rain-height: 62.207079736357144px; --rain-duration: 0.854124097698576s; --rain-delay: -0.4490639741967476s;"></i><i class="rain-drop" style="left: 19.9451%; --rain-height: 61.92371686654666px; --rain-duration: 0.747945205982461s; --rain-delay: -0.2664304459719338s;"></i><i class="rain-drop" style="left: 60.4247%; --rain-height: 42.71146355261891px; --rain-duration: 1.0250205230656535s; --rain-delay: -0.4795227910234231s;"></i><i class="rain-drop" style="left: 36.0895%; --rain-height: 44.325168909095716px; --rain-duration: 0.8931845187739542s; --rain-delay: -0.5936626430146387s;"></i><i class="rain-drop" style="left: 17.4799%; --rain-height: 35.79914994646972px; --rain-duration: 1.083443203646278s; --rain-delay: -0.11112969852977649s;"></i><i class="rain-drop" style="left: 27.2512%; --rain-height: 37.01860898017193px; --rain-duration: 0.6963776170111925s; --rain-delay: -0.6566922348299231s;"></i><i class="rain-drop" style="left: 55.4103%; --rain-height: 44.4210448788358px; --rain-duration: 0.7482404411652798s; --rain-delay: -1.3468365053244644s;"></i><i class="rain-drop" style="left: 56.5289%; --rain-height: 79.03442727588921px; --rain-duration: 1.0621712171550532s; --rain-delay: -0.7075463846124778s;"></i><i class="rain-drop" style="left: 92.967%; --rain-height: 72.08496074025486px; --rain-duration: 0.7531512842175085s; --rain-delay: -0.6104925259280877s;"></i><i class="rain-drop" style="left: 71.844%; --rain-height: 70.04385574904735px; --rain-duration: 0.8368140023145362s; --rain-delay: -0.3831635594164252s;"></i><i class="rain-drop" style="left: 27.7942%; --rain-height: 56.19838744440923px; --rain-duration: 1.1030211786607318s; --rain-delay: -0.44602819359397156s;"></i><i class="rain-drop" style="left: 58.3811%; --rain-height: 35.019522476443655px; --rain-duration: 0.9173929780370154s; --rain-delay: -0.13049692035970953s;"></i><i class="rain-drop" style="left: 59.1649%; --rain-height: 39.11690511038921px; --rain-duration: 1.0310291017224515s; --rain-delay: -0.08456876954808758s;"></i><i class="rain-drop" style="left: 90.9832%; --rain-height: 47.31312778083771px; --rain-duration: 1.0624873108662025s; --rain-delay: -0.2509181373763752s;"></i><i class="rain-drop" style="left: 2.99236%; --rain-height: 75.6997443815136px; --rain-duration: 1.1821810047181334s; --rain-delay: -0.5740794236666198s;"></i><i class="rain-drop" style="left: 97.7668%; --rain-height: 50.44771488163072px; --rain-duration: 0.6691367189310251s; --rain-delay: -1.0088219246186956s;"></i><i class="rain-drop" style="left: 14.81%; --rain-height: 69.9835580218314px; --rain-duration: 1.2759125305837786s; --rain-delay: -1.1745951342503147s;"></i><i class="rain-drop" style="left: 52.7831%; --rain-height: 62.99817915759041px; --rain-duration: 1.2677076016224986s; --rain-delay: -0.8532686623487205s;"></i><i class="rain-drop" style="left: 33.9678%; --rain-height: 59.19064017837364px; --rain-duration: 0.8298327844740179s; --rain-delay: -0.4782146308055922s;"></i><i class="rain-drop" style="left: 63.94%; --rain-height: 69.53635290142911px; --rain-duration: 0.8063584793187151s; --rain-delay: -1.0631600542917716s;"></i><i class="rain-drop" style="left: 54.9944%; --rain-height: 58.23759644042224px; --rain-duration: 1.3817451169520893s; --rain-delay: -0.12964998547202544s;"></i><i class="rain-drop" style="left: 71.3153%; --rain-height: 41.290569586046594px; --rain-duration: 0.9816989016061862s; --rain-delay: -0.5955021816173914s;"></i><i class="rain-drop" style="left: 64.5832%; --rain-height: 58.938832047564674px; --rain-duration: 1.362424354007536s; --rain-delay: -0.37105949518079095s;"></i><i class="rain-drop" style="left: 83.2439%; --rain-height: 64.27569292986024px; --rain-duration: 0.7142426254510139s; --rain-delay: -0.45936829259838247s;"></i><i class="rain-drop" style="left: 64.0062%; --rain-height: 44.132577000732155px; --rain-duration: 0.9250030913713616s; --rain-delay: -0.8848524402254149s;"></i><i class="rain-drop" style="left: 75.5576%; --rain-height: 62.77630603607132px; --rain-duration: 1.2636827431986999s; --rain-delay: -0.3346639482847586s;"></i><i class="rain-drop" style="left: 70.5079%; --rain-height: 38.38958583713718px; --rain-duration: 1.1986861442996273s; --rain-delay: -0.7486258347835062s;"></i><i class="rain-drop" style="left: 41.1774%; --rain-height: 54.48563326947733px; --rain-duration: 1.1737908144726437s; --rain-delay: -0.6859857668327081s;"></i><i class="rain-drop" style="left: 75.3568%; --rain-height: 39.21846789325575px; --rain-duration: 0.9105390670591902s; --rain-delay: -1.3080738039217312s;"></i><i class="rain-drop" style="left: 83.4431%; --rain-height: 58.18168826994882px; --rain-duration: 1.160778010052979s; --rain-delay: -0.1512150921488625s;"></i><i class="rain-drop" style="left: 12.2106%; --rain-height: 76.15746472874764px; --rain-duration: 1.023260618935812s; --rain-delay: -0.3833825824911242s;"></i><i class="rain-drop" style="left: 90.8664%; --rain-height: 79.51738700896277px; --rain-duration: 0.7384719441745937s; --rain-delay: -0.8537503324003354s;"></i><i class="rain-drop" style="left: 42.1015%; --rain-height: 42.4508728579311px; --rain-duration: 0.932903283830025s; --rain-delay: -0.6874366038706559s;"></i><i class="rain-drop" style="left: 44.5495%; --rain-height: 34.57877122960912px; --rain-duration: 1.2394352716403514s; --rain-delay: -0.9365627264942121s;"></i><i class="rain-drop" style="left: 78.0107%; --rain-height: 56.4698729805057px; --rain-duration: 0.9845233293630578s; --rain-delay: -0.7984241720666055s;"></i><i class="rain-drop" style="left: 72.4886%; --rain-height: 55.13313355707039px; --rain-duration: 1.157337393000116s; --rain-delay: -0.0736898295360357s;"></i><i class="rain-drop" style="left: 5.80828%; --rain-height: 51.33971412741621px; --rain-duration: 1.0459251653498143s; --rain-delay: -0.23695756342114185s;"></i><i class="rain-drop" style="left: 65.9511%; --rain-height: 59.466461024141644px; --rain-duration: 1.2850322883679048s; --rain-delay: -0.33515642553474273s;"></i><i class="rain-drop" style="left: 54.4516%; --rain-height: 33.030334259111356px; --rain-duration: 1.02283704704912s; --rain-delay: -0.7889945655310029s;"></i><i class="rain-drop" style="left: 28.3737%; --rain-height: 38.876944168868405px; --rain-duration: 1.1043003527290116s; --rain-delay: -0.7577241155899508s;"></i><i class="rain-drop" style="left: 84.8965%; --rain-height: 46.05779992659188px; --rain-duration: 0.8877218119006882s; --rain-delay: -0.7653988429514141s;"></i><i class="rain-drop" style="left: 92.8461%; --rain-height: 67.93885503676738px; --rain-duration: 0.9302295822232541s; --rain-delay: -1.375455672586327s;"></i><i class="rain-drop" style="left: 44.4595%; --rain-height: 46.99506353254635px; --rain-duration: 0.7260588594756445s; --rain-delay: -0.8076222776226873s;"></i><i class="rain-drop" style="left: 65.966%; --rain-height: 33.81012438294047px; --rain-duration: 0.8585762964494605s; --rain-delay: -0.19482733995377555s;"></i><i class="rain-drop" style="left: 25.2086%; --rain-height: 75.54390179867231px; --rain-duration: 1.297165377209617s; --rain-delay: -0.4864722308646938s;"></i><i class="rain-drop" style="left: 83.9332%; --rain-height: 59.383773814543076px; --rain-duration: 1.3272551636064023s; --rain-delay: -0.9579872459756685s;"></i><i class="rain-drop" style="left: 99.6994%; --rain-height: 37.659036623763186px; --rain-duration: 1.3734417071727631s; --rain-delay: -0.25169473849698026s;"></i><i class="rain-drop" style="left: 80.1536%; --rain-height: 68.38856413231393px; --rain-duration: 0.9907591874671176s; --rain-delay: -0.26923458908330555s;"></i><i class="rain-drop" style="left: 72.7589%; --rain-height: 48.027686352609315px; --rain-duration: 0.8795841225270153s; --rain-delay: -0.541399395887966s;"></i><i class="rain-drop" style="left: 2.08738%; --rain-height: 71.17263877435957px; --rain-duration: 1.2105098426404837s; --rain-delay: -0.8664021433947932s;"></i><i class="rain-drop" style="left: 40.8558%; --rain-height: 78.62849260900155px; --rain-duration: 1.3663100313351286s; --rain-delay: -0.3817163715646297s;"></i><i class="rain-drop" style="left: 27.166%; --rain-height: 75.05683964725043px; --rain-duration: 0.8172366514383238s; --rain-delay: -0.6556188478892735s;"></i><i class="rain-drop" style="left: 2.37823%; --rain-height: 51.37233506700247px; --rain-duration: 1.0933516659173708s; --rain-delay: -0.17192163830702378s;"></i><i class="rain-drop" style="left: 8.96268%; --rain-height: 72.59471678561721px; --rain-duration: 1.0637150458399853s; --rain-delay: -0.9048955362685743s;"></i><i class="rain-drop" style="left: 59.1465%; --rain-height: 76.65147875888246px; --rain-duration: 1.338383624295795s; --rain-delay: -0.6956660340298223s;"></i></div>
+                <div class="rain-layer" aria-hidden="true"></div>
                 <div class="clock" aria-label="Klok">
                   <div class="clock-markers" aria-hidden="true"></div>
-                  <div class="clock-hand hour-hand" style="transform: rotate(0deg);"></div>
-                  <div class="clock-hand minute-hand" style="transform: rotate(0deg);"></div>
+                  <div class="clock-hand hour-hand"></div>
+                  <div class="clock-hand minute-hand"></div>
                   <div class="clock-center"></div>
                 </div>
                 <div class="day-time">
                   <p class="eyebrow">TIJD VAN DE DAG</p>
-                  <h1 id="edition-five-title"><span class="time-value">00:00</span></h1>
-                  <p class="weather-event">De hemel is diep donker. Verre wolken verdwijnen in de nacht.</p>
+                  <h1 id="edition-five-title"><span class="time-value">08:00</span></h1>
+                  <p class="weather-event">De zon stijgt op. De lucht wordt langzaam blauw.</p>
                 </div>
               </div>
             </article>
           </div>
         </div>
-        <div class="day-progress" aria-live="polite">00:00 <span aria-hidden="true">↓</span></div>
+        <div class="day-progress" aria-live="polite">Scroll om door de dag te gaan <span aria-hidden="true">↓</span></div>
       </section>
     </main>
 
@@ -194,6 +207,5 @@
       </nav>
     </dialog>
     <p class="toast" role="status" aria-live="polite"></p>
-  
-
-</body></html>
+  </body>
+</html>

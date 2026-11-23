@@ -83,8 +83,8 @@ a:focus-visible {
 
 .home-artboard {
   position: relative;
-  width: min(100vw, 125svh);
-  aspect-ratio: 5 / 4;
+  width: 100vw;
+  height: 100svh;
   overflow: hidden;
   background:
     radial-gradient(circle at 76% 18%, rgb(91 188 235 / 48%), transparent 26%),
@@ -636,7 +636,7 @@ a:focus-visible {
 }
 .edition-three-mobile-canvas { z-index: 1; height: 100%; }
 
-.edition-five { background: #91c9ed; transition: background 700ms ease, color 700ms ease; }
+.edition-five { background: #91c9ed; transition: background 3000ms ease, color 3000ms ease; }
 .edition-five.is-night { background: #06172f; }
 .edition-five .day-scroll { height: calc(100svh - 76px); margin: 0; }
 .edition-five .page-nav {
@@ -677,9 +677,9 @@ a:focus-visible {
   display: grid; height: 100%; grid-template-columns: minmax(280px, .8fr) minmax(300px, 1.2fr);
   align-items: center; gap: 3vw; padding: 4vw 5vw;
   background: linear-gradient(150deg, #7cc1eb, #edf7ff 68%, #ffc66e);
-  transition: background 700ms ease;
+  transition: background 3000ms ease;
 }
-.edition-five.is-night .day-sky { background: linear-gradient(150deg, #06142d, #102e56 65%, #301d4e); }
+.edition-five.is-night .day-sky { background: linear-gradient(150deg, #06142d, #102e56 65%, #301d4e); transition: background 3000ms ease; }
 .day-sky::before {
   position: absolute;
   z-index: 1;
@@ -796,7 +796,7 @@ a:focus-visible {
   position: absolute;
   inset: 76px 0 0;
   display: grid;
-  grid-template-columns: minmax(220px, .72fr) minmax(420px, 1.28fr);
+  grid-template-columns: minmax(220px, .62fr) minmax(520px, 1.38fr);
   align-items: center;
   gap: clamp(1.5rem, 5vw, 5rem);
   padding: clamp(1.5rem, 4vw, 4rem);
@@ -838,23 +838,21 @@ a:focus-visible {
 
 .puzzle-board {
   position: relative;
-  width: min(100%, 50svh);
+  width: min(82%, 60svh);
   aspect-ratio: 4 / 3;
-  justify-self: center;
-  border-radius: 10px;
-  background:
-    linear-gradient(rgb(255 255 255 / 9%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 9%) 1px, transparent 1px),
-    rgb(7 95 158 / 35%);
-  background-size: 25% 25%;
-  box-shadow: 0 20px 50px rgb(3 64 105 / 24%);
+  justify-self: end;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-radius: 8px;
+  background: rgb(7 95 158 / 28%);
+  box-shadow: 0 24px 55px rgb(3 64 105 / 28%);
+  background-blend-mode: normal;
 }
 
 .puzzle-slot {
   position: absolute;
   z-index: 1;
   border: 1px dashed rgb(255 255 255 / 42%);
-  background: rgb(255 255 255 / 6%);
+  background: rgb(7 95 158 / 32%);
   box-shadow: inset 0 0 18px rgb(255 255 255 / 5%);
 }
 
@@ -865,15 +863,15 @@ a:focus-visible {
 
 .puzzle-tray {
   position: absolute;
-  right: clamp(1rem, 3vw, 3rem);
-  bottom: clamp(1rem, 2vw, 2rem);
-  left: calc(27% + 1rem);
+  right: clamp(1rem, 4vw, 4rem);
+  bottom: clamp(1rem, 3vw, 3rem);
+  left: calc(38% + 1rem);
   display: grid;
-  grid-template-columns: repeat(9, minmax(42px, 1fr));
-  align-items: end;
+  grid-template-columns: repeat(9, minmax(44px, 1fr));
+  align-items: center;
   gap: .45rem;
-  min-height: 84px;
-  padding: .55rem;
+  min-height: 96px;
+  padding: .65rem;
   border: 1px solid rgb(255 255 255 / 22%);
   border-radius: 12px;
   background: rgb(255 255 255 / 8%);
@@ -881,14 +879,16 @@ a:focus-visible {
 }
 
 .puzzle-piece {
-  position: absolute;
+  position: relative;
   z-index: 4;
-  width: 104px;
-  height: 82px;
+  width: 80px;
+  height: 80px;
+  justify-self: center;
   border: 2px solid rgb(255 255 255 / 86%);
-  border-radius: 5px;
+  border-radius: 6px;
   background-image: url("assets/edition-2/clouds-04.jpeg");
   background-repeat: no-repeat;
+  background-size: cover;
   box-shadow: 0 10px 24px rgb(2 48 82 / 28%);
   cursor: grab;
   touch-action: none;
@@ -910,6 +910,45 @@ a:focus-visible {
   border: 0;
   border-radius: 0;
   box-shadow: none;
+  cursor: grab;
+}
+
+.puzzle-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 1.4rem;
+  flex-wrap: wrap;
+}
+
+.puzzle-counter {
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 82%);
+}
+
+.puzzle-next {
+  min-height: 42px;
+  padding: .7rem 1.1rem;
+  border: 1px solid rgb(255 255 255 / 50%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 10%);
+  color: var(--white);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.puzzle-next:hover {
+  background: rgb(255 255 255 / 18%);
+}
+
+.puzzle-next:disabled {
+  opacity: .4;
   cursor: default;
 }
 
